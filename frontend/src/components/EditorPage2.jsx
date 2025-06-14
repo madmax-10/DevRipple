@@ -508,6 +508,7 @@ export default App;
   }
 
   const parseUITemplate = (projectFilesString) => {
+
     const files = {};
     const lines = projectFilesString.split('\n');
 
