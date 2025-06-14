@@ -1,5 +1,3 @@
-Of course, here is a README.md file generated based on the code you provided.
-
 # DevRipple
 
 ## Inspiration
@@ -52,3 +50,44 @@ We have a number of exciting features planned for the future of DevRipple:
 * **Interactive AI**: We envision a more interactive experience where users can "chat" with the AI to iterate on their application, asking for changes and new features in a conversational manner.
 * **Saving and Versioning**: Allowing users to save their projects and have a history of their changes is another feature we plan to implement.
 * **Enhanced UI/UX**: We will continue to refine the user interface, including adding more features to the code editor and improving the overall aesthetic of the application.
+
+Of course, here are the steps to run the application in a Markdown format with code blocks.
+
+## How to Run DevRipple
+
+To get your local development environment set up and running, please follow the steps below. You will need to have two terminal windows open, one for the backend and one for the frontend.
+
+### 1. Backend Setup
+
+First, let's get the Django backend server started.
+
+```bash
+# Navigate to the backend directory
+cd backend
+
+# Install the required Python packages
+# (Assuming you have a requirements.txt file)
+pip install -r requirements.txt
+
+# Start the Django development server
+python manage.py runserver
+```
+
+You should see output indicating that the server is running, typically on `http://127.0.0.1:8000/`.
+
+### 2. Frontend Setup
+
+In your second terminal, you will set up and start the React frontend.
+
+```bash
+# Navigate to the frontend directory
+cd frontend
+
+# Install the necessary Node.js packages
+npm install
+
+# Start the frontend development server
+npm run dev
+```
+
+This command will start the React development server, usually on `http://localhost:5173/` or another available port. Once both servers are running, you can open your browser to the frontend URL to start using DevRipple.
