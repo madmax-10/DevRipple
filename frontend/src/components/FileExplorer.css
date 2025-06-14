@@ -1,0 +1,107 @@
+.file-explorer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #1a1a1a;
+}
+
+.explorer-header {
+  padding: 16px;
+  border-bottom: 1px solid #333;
+}
+
+.explorer-header h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0;
+  color: #d1d5db;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.file-tree {
+  flex: 1;
+  padding: 8px 0;
+  overflow-y: auto;
+}
+
+.file-item,
+.folder-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.file-item:hover,
+.folder-header:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.file-item.selected {
+  background: rgba(139, 92, 246, 0.2);
+  color: #ffffff;
+}
+
+.folder-item {
+  margin: 0;
+}
+
+.folder-header {
+  font-weight: 500;
+}
+
+.folder-children {
+  margin-left: 20px;
+}
+
+.folder-arrow {
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+  color: #9ca3af;
+}
+
+.folder-arrow.expanded {
+  transform: rotate(90deg);
+}
+
+.file-icon,
+.folder-icon {
+  font-size: 0.875rem;
+  width: 16px;
+  text-align: center;
+}
+
+.file-name,
+.folder-name {
+  color: #d1d5db;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-item.selected .file-name {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* Scrollbar */
+.file-tree::-webkit-scrollbar {
+  width: 4px;
+}
+
+.file-tree::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.file-tree::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 2px;
+}
+
+.file-tree::-webkit-scrollbar-thumb:hover {
+  background: #505050;
+}
