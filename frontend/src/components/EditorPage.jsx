@@ -17,7 +17,7 @@ const EditorPage = () => {
   const [fileTree,setFileTree] = useState(null)
   const [files,setFiles] = useState(null)
   const [additional_code,setAdditionalCode] = useState('')
-
+  const baseUrl = 'https://f4698b1f-e18a-42fc-aaef-a9d2e89cfd77-dev.e1-us-east-azure.choreoapis.dev/default/backend/v1.0'
   const [previewUrl, setPreviewUrl] = useState(null)
 
   const webcontainerInstance = useWebContainer()
@@ -81,7 +81,7 @@ const EditorPage = () => {
 
   const getCode = (UITemplate,enhancedPrompt) => async () => {
 
-    const res = await axios.post("http://127.0.0.1:8000/api/chat/", {
+    const res = await axios.post(`${baseUrl}/api/chat/`, {
       "enhanced_prompt": enhancedPrompt,
       "platform_prompt": UITemplate,
     });
@@ -266,7 +266,7 @@ const EditorPage = () => {
         if (isGenerating){
         // setIsGenerating(true) // Set generating before the async operation starts
           try {
-              const res = await axios.post("http://127.0.0.1:8000/api/template/", {
+              const res = await axios.post(`${baseUrl}/api/template/`, {
                   message: prompt,
               })
               const responseData = res.data; // Use a distinct variable name
