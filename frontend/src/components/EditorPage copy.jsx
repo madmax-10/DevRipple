@@ -6,6 +6,7 @@ import Preview from './Preview'
 import './EditorPage.css'
 import axios from 'axios'
 import useWebContainer from '../hooks/useWebContainer'
+import { use } from 'react'
 
 const EditorPage = () => {
 
@@ -16,16 +17,14 @@ const EditorPage = () => {
   const [isGenerating, setIsGenerating] = useState(true)
   const [fileTree,setFileTree] = useState(null)
   const [files,setFiles] = useState(null)
-  const [additional_code,setAdditionalCode] = useState('')
-
+  const [llmResponse,setLlmResponse] = useState(null)
   const [previewUrl, setPreviewUrl] = useState(null)
-
   const webcontainerInstance = useWebContainer()
 
   let installProcess;
   let devServerProcess;
 
-  const installDependencies = async () => {
+  const installDependencies = useCallback( async () => {
       if (!webcontainerInstance) {
           console.error('WebContainer not booted yet!');
           return;
@@ -55,9 +54,9 @@ const EditorPage = () => {
           return;
       }
       console.log('Dependencies installed successfully!');
-  }
+  },[webcontainerInstance]);
 
-  const startDevServer = async() => {
+  const startDevServer = useCallback(async() => {
       if (!webcontainerInstance) {
           console.error('WebContainer not booted yet!');
           return;
@@ -77,9 +76,9 @@ const EditorPage = () => {
 
       // Don't await devServerProcess.exit if it's a long-running server!
       // Instead, listen for 'server-ready' event.
-  }
+  },[webcontainerInstance]);
 
-  const getCode = (UITemplate,enhancedPrompt) => async () => {
+  const getCode = useCallback((UITemplate, enhancedPrompt) => async () => {
 
     const res = await axios.post("http://127.0.0.1:8000/api/chat/", {
       "enhanced_prompt": enhancedPrompt,
@@ -96,9 +95,9 @@ const EditorPage = () => {
       console.log("Additional code received:", additionalCode); 
       return additionalCode   
     }
-  }
+  },[enhancedPrompt, UITemplate]);
 
-  const parseArtifact = (boltString) => {
+  const parseArtifact = useCallback((boltString) => {
 
     const files = {};
     const regex = /<boltAction.*?filePath="([^"]+)"[^>]*>([\s\S]*?)<\/boltAction>/g;
@@ -118,9 +117,9 @@ const EditorPage = () => {
 
     return files;
 
-  }
+  },[]);
 
-  const parseUITemplate = (projectFilesString) => {
+  const parseUITemplate = useCallback((projectFilesString) => {
     const files = {};
     const lines = projectFilesString.split('\n');
 
@@ -168,9 +167,9 @@ const EditorPage = () => {
 
     return files;
 
-  }
+  }, []);
     
-  const parseFiles = (files) =>{
+  const parseFiles = useCallback((files) =>{
 
     const fileTree = {};
 
@@ -198,9 +197,9 @@ const EditorPage = () => {
     setFileTree(fileTree);
     console.log("Parsed file structure:", fileTree);
 
-  }
+  },[setFileTree]);
 
-  const webContainerformat = (flatFiles) => {
+  const webContainerformat = useCallback((flatFiles) => {
 
     const result = {};
 
@@ -233,9 +232,9 @@ const EditorPage = () => {
     }
     return result;
 
-  }
+  },[]);
 
-  const setUpFiles = (projectFiles) => async() => {
+  const setUpFiles = useCallback((projectFiles) => async() => {
     if (!webcontainerInstance) {
       console.error('WebContainer not booted yet!');
       return;
@@ -243,21 +242,9 @@ const EditorPage = () => {
     console.log('Mounting project files...');
     await webcontainerInstance.mount(projectFiles);
     console.log('Files mounted successfully!');
-  }
+  }, [webcontainerInstance]);
 
-       
-  useEffect(() => { // No 'async' here
-
-    if (!prompt) {
-      navigate('/')
-      return
-  }
-
-    if (!webcontainerInstance) {
-      return;
-    }
-
-    const fetchData = async () => { // Define the async function inside
+   const fetchData = async () => { // Define the async function inside
     // const fetchData = () => { // Use useCallback to memoize the function
         if (!prompt) {
             navigate('/')
@@ -365,6 +352,18 @@ const EditorPage = () => {
           }
         }
     };
+
+       
+  useEffect(() => { // No 'async' here
+
+    if (!prompt) {
+      navigate('/')
+      return
+  }
+
+    if (!webcontainerInstance) {
+      return;
+    }
 
     fetchData(); // Call the async function immediately
 

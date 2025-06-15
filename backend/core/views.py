@@ -8,6 +8,7 @@ from .utils import sysrem as systemPrompt
 from .utils.prompts import nodeJs, nextJs, reactJs
 from .utils import stripIndents
 
+
 class aiResponse(APIView):
     
     def post(self, request):
@@ -41,6 +42,8 @@ class aiResponse(APIView):
     #         print(chunk.choices[0].delta.content, end="", flush=True)
 
 class promptTemplate(APIView):
+    
+
     
     def post(self, request):
         
