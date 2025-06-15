@@ -27,10 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 OPENROUTER_API_KEY= os.environ.get('OPENAI_API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
 
+ALLOWED_HOSTS_STRING = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1')
+ALLOWED_HOSTS = ALLOWED_HOSTS_STRING.split(',') if ALLOWED_HOSTS_STRING else []
 
 # Application definition
 
@@ -52,7 +53,22 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ]
 }
-CORS_ALLOW_ALL_ORIGINS = True  # For dev only. Use whitelist in prod.
+CORS_ALLOWED_ORIGINS_STRING = os.environ.get('CORS_ALLOWED_ORIGINS')
+
+if CORS_ALLOWED_ORIGINS_STRING:
+    CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS_STRING.split(',')
+else:
+    # Set a default for local development if the variable is not set
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:5173",
+        "http://localhost:8080",
+        "http://127.0.0.1:3000",
+    ]
+
+# --- CSRF Configuration for CORS ---
+# This is also very important, especially for POST/PUT requests from your frontend.
+# It tells Django that it's safe to accept state-changing requests from these domains.
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
