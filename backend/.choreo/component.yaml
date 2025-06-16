@@ -30,7 +30,7 @@ spec:
     command: 
       - "gunicorn"
       # IMPORTANT: Change 'your_project_name' to your actual project folder name
-      - "backend.wsgi" 
+      - "backend.wsgi:application" 
       - "--bind"
       - "0.0.0.0:8000"
 
