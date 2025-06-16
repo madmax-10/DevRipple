@@ -1,0 +1,42 @@
+# The version of the Choreo configuration file schema.
+apiVersion: v1
+# Specifies the kind of component. For a DRF app, it's 'Service'.
+kind: Component
+
+# Basic metadata for your component.
+metadata:
+  # The name of your component. This should match the component name in the Choreo console.
+  name: "backend" 
+  # A brief description of your component.
+  description: "A Django Rest Framework API for my project."
+
+# The specification for your component.
+spec:
+  # The type of the component.
+  type: Service
+
+  # How the application should be built.
+  build:
+    # --- THIS IS THE KEY CHANGE ---
+    # Specifies the directory where your source code is located.
+    # Choreo will look for 'requirements.txt' inside this folder.
+    sourceDir: backend
+    # We still specify the buildpack so Choreo knows it's a Python project.
+    buildPack: Python
+    
+  # How the application should be run.
+  runtime:
+    # This command will be executed from within the 'sourceDir' ('backend').
+    command: 
+      - "gunicorn"
+      # IMPORTANT: Change 'your_project_name' to your actual project folder name
+      - "backend.wsgi" 
+      - "--bind"
+      - "0.0.0.0:8000"
+
+  # Defines the network accessibility of the component.
+  network:
+    # A list of ports that are exposed by the component.
+    - port: 8000
+      protocol: TCP
+      name: "api"
