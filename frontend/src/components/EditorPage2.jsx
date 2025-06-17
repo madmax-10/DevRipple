@@ -6,6 +6,8 @@ import Preview from './Preview'
 import './EditorPage.css'
 import axios from 'axios'
 import useWebContainer from '../hooks/useWebContainer'
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 const EditorPage2 = () => {
 
@@ -399,6 +401,21 @@ export default App;
 </boltArtifact>`)
 
   const [previewUrl, setPreviewUrl] = useState(null)
+
+  const downloadProjectFromFlatFiles = useCallback(async () => {
+    console.log('Using pre-existing flat files map. This is efficient!');
+    
+    const zip = new JSZip();
+
+    // The loop is simple and direct
+    for (const [path, content] of Object.entries(files)) {
+      zip.file(path, content);
+    }
+
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    saveAs(zipBlob, 'my-project.zip');
+  },[files]);
+
 
   const webcontainerInstance = useWebContainer()
 
@@ -794,7 +811,7 @@ if (isGenerating) {
           </div>
         </div>
         <div className="header-right">
-          <button className="btn btn-secondary">Save</button>
+          <button className="btn btn-secondary" onClick={downloadProjectFromFlatFiles}>Save</button>
           <button className="btn btn-primary">Deploy</button>
         </div>
       </header>

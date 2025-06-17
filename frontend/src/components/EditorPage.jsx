@@ -25,6 +25,20 @@ const EditorPage = () => {
   let installProcess;
   let devServerProcess;
 
+  const downloadProjectFromFlatFiles = useCallback(async () => {
+    console.log('Using pre-existing flat files map. This is efficient!');
+    
+    const zip = new JSZip();
+
+    // The loop is simple and direct
+    for (const [path, content] of Object.entries(files)) {
+      zip.file(path, content);
+    }
+
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    saveAs(zipBlob, 'my-project.zip');
+  },[files]);
+
   const installDependencies = async () => {
       if (!webcontainerInstance) {
           console.error('WebContainer not booted yet!');
@@ -403,8 +417,8 @@ if (isGenerating) {
           </div>
         </div>
         <div className="header-right">
-          <button className="btn btn-secondary">Save</button>
-          <button className="btn btn-primary">Deploy</button>
+          <button className="btn btn-secondary" onClick={downloadProjectFromFlatFiles}>Export</button>
+          {/* <button className="btn btn-primary">Deploy</button> */}
         </div>
       </header>
 
