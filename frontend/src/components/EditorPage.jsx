@@ -17,7 +17,7 @@ const EditorPage = () => {
   const [fileTree,setFileTree] = useState(null)
   const [files,setFiles] = useState(null)
   const [additional_code,setAdditionalCode] = useState('')
-  const baseUrl = 'https://f4698b1f-e18a-42fc-aaef-a9d2e89cfd77-dev.e1-us-east-azure.choreoapis.dev/default/backend/v1.0'
+  const baseUrl = 'https://devripple-g952.onrender.com'
   const [previewUrl, setPreviewUrl] = useState(null)
 
   const webcontainerInstance = useWebContainer()
